@@ -32,3 +32,4 @@ cmake ..
 ## To-Do List
 - Currently, there is no memory bank controller implemented, so only 32KB ROMs are supported. I plan to implement MBC1 at the very least.
 - Improve the cycle accuracy of the CPU. Not really needed, but is something to do.
+- Audio.
