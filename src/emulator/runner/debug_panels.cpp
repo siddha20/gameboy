@@ -1,5 +1,6 @@
 #include <bitset>
 #include <sstream>
+#include <cmath>
 #include "runner.h"
 
 namespace emulator
@@ -104,10 +105,13 @@ void Runner::render_debug_panel_4()
 
 void Runner::render_debug_panel_5()
 {
+    static float speed = cycle_speed;
     ImGui::SetNextWindowPos(ImVec2{160, (2 * ppu.DISPLAY_HEIGHT)});
     ImGui::SetNextWindowSize(ImVec2{160, (WINDOW_HEIGHT - (2 * ppu.DISPLAY_HEIGHT))});
     ImGui::Begin("Debug Controls", &show_debug_windows, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration);
     if(ImGui::Button("Pause")) pause = !pause;
+    ImGui::SliderFloat("Speed", &speed, 0.0, 1.0, "%.3f");
+    cycle_speed = std::pow(speed, 10.0);
     char text[8]{};
     ImGui::InputTextWithHint("(hex)", "address", text, 5);
     std::stringstream stream;

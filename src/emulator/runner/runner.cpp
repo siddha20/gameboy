@@ -15,6 +15,7 @@ Runner::Runner(const std::string &rom_file_name)
     , cycles{}
     , show_debug_windows{true}
     , pause{false}
+    , cycle_speed{1.0}
 {
     // Load ROM into memory.
     std::ifstream in(rom_file_name, std::ios::binary);
@@ -57,7 +58,7 @@ void Runner::start()
 
         if (!pause)
         {
-            for (int i = 0; i < 70224 ; i++)
+            for (u64 i = 0; i < DOTS_PER_FRAME * cycle_speed; i++)
             {
                 if (cycles % 4 == 0) cpu.step();
                 ppu.step();

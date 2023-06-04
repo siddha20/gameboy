@@ -18,6 +18,7 @@ public:
     static constexpr size_t WINDOW_WIDTH = 600;
     static constexpr int PIXEL_SCALE = 2;
     static constexpr double FRAME_RATE = 60;
+    static constexpr u64 DOTS_PER_FRAME = 70224;
 
     Runner(const std::string& rom_file_name);
     ~Runner();
@@ -35,6 +36,7 @@ private:
     ImGuiIO *io;
     bool show_debug_windows;
     bool pause;
+    float cycle_speed;
 
     void init_sdl();
     void init_imgui();
