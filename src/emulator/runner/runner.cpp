@@ -85,7 +85,7 @@ void Runner::start()
 
         end_tick = SDL_GetTicks64();
         delta_tick = end_tick - start_tick;
-        if(delta_tick < (1000.0 / (60.0))) SDL_Delay((1000.0 / (60.0)) - delta_tick);
+        if(delta_tick < (1000.0 / (FRAME_RATE))) SDL_Delay((1000.0 / (FRAME_RATE)) - delta_tick);
     }
 }
 
@@ -124,7 +124,7 @@ void Runner::render_ppu_line_queue()
             int window_pos_y = item.line;
             if (window_pos_x >= ppu.DISPLAY_WIDTH || window_pos_y >= ppu.DISPLAY_HEIGHT) continue;
             set_color(item.data[i].color, 255);
-            SDL_Rect rect{2 * window_pos_x, 2 * window_pos_y, 2, 2};
+            SDL_Rect rect{PIXEL_SCALE * window_pos_x, PIXEL_SCALE * window_pos_y, PIXEL_SCALE, PIXEL_SCALE};
             SDL_RenderFillRect(renderer, &rect);
         }
     }

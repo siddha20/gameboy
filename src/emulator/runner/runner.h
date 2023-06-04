@@ -16,6 +16,8 @@ class Runner
 public:
     static constexpr size_t WINDOW_HEIGHT = 650;
     static constexpr size_t WINDOW_WIDTH = 600;
+    static constexpr int PIXEL_SCALE = 2;
+    static constexpr double FRAME_RATE = 60;
 
     Runner(const std::string& rom_file_name);
     ~Runner();
