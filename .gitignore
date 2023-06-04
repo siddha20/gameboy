@@ -1,7 +1,6 @@
 .vscode
 /bin
 /build
-/docs
-/lib/SDL2
-/lib/*
-!/lib/imgui
+/docs/*
+!/docs/gifs
+/lib

@@ -68,10 +68,8 @@ void Runner::render_debug_panel_3()
     ImGui::Text("Window Enable: %u", mapper.memory.lcd_control.window_enable);
 
     ImGui::SeparatorText("Joypad Status");
-    ImGui::Text("Flag Byte: 0b%s", std::bitset<8>(mapper.memory.joypad.flag_byte).to_string().c_str());
-    ImGui::Text("Out Byte: 0b%s", std::bitset<8>(mapper.memory.joypad_out).to_string().c_str());
-    ImGui::Text("Dir. State: 0b%s", std::bitset<8>(joypad.get_direction_keys_state()).to_string().c_str());
-    ImGui::Text("Action State: 0b%s", std::bitset<8>(joypad.get_action_keys_state()).to_string().c_str());
+    ImGui::Text("Dir. State: 0b%s", std::bitset<4>(joypad.get_direction_keys_state()).to_string().c_str());
+    ImGui::Text("Action State: 0b%s", std::bitset<4>(joypad.get_action_keys_state()).to_string().c_str());
     ImGui::End();
 }
 
