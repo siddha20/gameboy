@@ -3,4 +3,5 @@
 /build
 /docs
 /lib/SDL2
+/lib/*
 !/lib/imgui
