@@ -27,7 +27,7 @@ auto Memory::read(u16 address) -> std::optional<u8>
     if (byte)
     {
         if (address == 0xFF00) return joypad_out; 
-        return byte->get();
+        else return byte->get();
     }
     else return {};
 }
@@ -38,9 +38,15 @@ bool Memory::write(u8 content, u16 address)
     auto byte = get_byte(address);
     if (byte) 
     {
-        if (address == 0xFF04) byte->get() = 0x00; // Reset DIV
-        else if (address == 0xFF41) byte->get() +=  (content & 0xF8); // The last 3 bits of 0xFF41 are read only
-        else byte->get() = content;
+        switch (address)
+        {
+            case 0xFF04: byte->get() = 0x00; break; // Reset DIV
+            case 0xFF41: byte->get() += (content & 0xF8); break; // The last 3 bits of 0xFF41 are read only
+            default: byte->get() = content;
+        }
+        // if (address == 0xFF04) byte->get() = 0x00; // Reset DIV
+        // else if (address == 0xFF41) byte->get() +=  (content & 0xF8); // The last 3 bits of 0xFF41 are read only
+        // else byte->get() = content;
         return true;
     }
     else return false; 
