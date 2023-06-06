@@ -10,7 +10,6 @@ PPU::PPU(Mapper &mapper)
     , stat_mode{_2_OAMSearch}
     , cycle_count{0}
     , total_cycles{0}
-    , render_line{0}
 {}
 
 void PPU::step()
@@ -79,7 +78,6 @@ void PPU::step()
         if (cycle_count == DRAW_LINE_CYCLES)
         {
             cycle_count = 0;
-            render_line = true;
             draw_background_line();
             draw_window_line();
             draw_sprite_line();
@@ -89,23 +87,10 @@ void PPU::step()
     }
 }
 
-bool PPU::render()
-{
-    if (render_line)
-    {
-        render_line = false;
-        return true;
-    }
-    return false;
-}
-
 void PPU::dma_transfer()
 {
     u16 source = mapper.memory.dma_location << 8;
-    for (u8 i = 0; i < 0xA0; i++)
-    {
-        mapper.write(mapper.read(source + i), mapper.memory.SPRITE_START + i);
-    }
+    for (u8 i = 0; i < 0xA0; i++) mapper.write(mapper.read(source + i), mapper.memory.SPRITE_START + i);
 }
 
 void PPU::set_interrupts()
@@ -223,17 +208,8 @@ void PPU::draw_sprite_line()
 
         const SpriteAttribute &sprite = mapper.memory.oam[i];
 
-        // Check if sprite will be rendered on the screen.
-        // if ((sprite.y_position <= (16 - sprite_size)) || (sprite.y_position >= 160)) continue;
         if ((sprite.y_position == 0) || (sprite.y_position >= 160)) continue;
-        if ((sprite.x_position == 0) || (sprite.x_position >= 168))
-        {
-            ++sprite_count;
-            continue;
-        }
-
-        // u8 pos_y = pos_y < 16 ? pos_y : sprite.y_position - 16;
-        // u8 pos_x = pos_x < 8  ? pos_x : sprite.x_position - 8;
+        if ((sprite.x_position == 0) || (sprite.x_position >= 168)) continue;
 
         u8 pos_y = (sprite.y_position - 16);
         u8 pos_x = (sprite.x_position - 8);
@@ -249,12 +225,9 @@ void PPU::draw_sprite_line()
             x_end = 8;
         }
 
-        // std::cout << (u16)pos_y << " " << (u16)pos_x << std::endl;
-
         if (pos_y <= ly && ly < (pos_y + sprite_size))
         {
             u8 pixel_y = ly;
-            // u8 tile_pixel_y = pixel_y % TILE_HEIGHT;
             u8 tile_pixel_y = ly - pos_y;
             u8 y_offset = sprite.y_flip ? 2 * ((sprite_size - 1) - tile_pixel_y) : 2 * tile_pixel_y;
             u8 tile_index = mapper.memory.lcd_control.obj_size ? sprite.tile_index & 0xFE : sprite.tile_index;
@@ -263,14 +236,11 @@ void PPU::draw_sprite_line()
             u8 lo = mapper.read(tiledata_address);
             u8 hi = mapper.read(tiledata_address + 1);
 
-            // std::cout << std::hex << "i: " << (u16)i << " " << (u16)pos_y << " " << (u16)lo << " " << (u16)hi << " " << tiledata_address << std::endl;
-
             ColorByte &palette = sprite.palette_number ? mapper.memory.palettes.OBP1 : mapper.memory.palettes.OBP0;
 
-            for (u8 x = 0; x < x_end; x++) // TILE_WIDTH - (pos_x % TILE_WIDTH); x++) // 0...8
+            for (u8 x = 0; x < x_end; x++)
             {
                 u8 pixel_x = pos_x + x;
-                // u8 tile_pixel_x = pixel_x % TILE_WIDTH;
                 u8 tile_pixel_x = x;
 
                 u8 x_offset =  sprite.x_flip ? tile_pixel_x : 7 - tile_pixel_x;
@@ -282,6 +252,7 @@ void PPU::draw_sprite_line()
                 line[pixel_x] = {color_id, color};
             }
             render_queue.push(RenderItem{ly, line, SPRITE});
+            sprite_count++;
         }
     }
 }

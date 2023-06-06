@@ -71,7 +71,6 @@ public:
     PPU(Mapper &mapper);
 
     void step();
-    bool render();
     auto const &get_line() const { return line; }
     StatMode get_stat_mode() const { return stat_mode; }
     u64 get_mode_cycles() const { return cycle_count; }
@@ -92,7 +91,6 @@ private:
     StatMode stat_mode;
     u64 cycle_count;
     u64 total_cycles;
-    bool render_line;
 
     void dma_transfer();
     void set_interrupts();

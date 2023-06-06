@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.18.0)
 
-# set(CMAKE_BUILD_TYPE Release)
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
+# set(CMAKE_BUILD_TYPE Debug)
 
 if(APPLE OR UNIX)
   set(CMAKE_C_COMPILER "gcc")
@@ -53,7 +53,7 @@ set(TARGETS gameboy emulator emulator_tests)
 foreach(TARGET IN LISTS TARGETS)
   if(MSVC)
     # target_compile_options(${TARGET} PRIVATE /W4)
-    # target_compile_options(${TARGET} PRIVATE /O2)
+    target_compile_options(${TARGET} PRIVATE /O2)
   else()
     # target_compile_options(${TARGET} PRIVATE -Wall -Wextra -Wpedantic))
     target_compile_options(${TARGET} PRIVATE -O2)
