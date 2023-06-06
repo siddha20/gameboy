@@ -44,9 +44,6 @@ bool Memory::write(u8 content, u16 address)
             case 0xFF41: byte->get() += (content & 0xF8); break; // The last 3 bits of 0xFF41 are read only
             default: byte->get() = content;
         }
-        // if (address == 0xFF04) byte->get() = 0x00; // Reset DIV
-        // else if (address == 0xFF41) byte->get() +=  (content & 0xF8); // The last 3 bits of 0xFF41 are read only
-        // else byte->get() = content;
         return true;
     }
     else return false; 
