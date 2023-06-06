@@ -13,6 +13,16 @@ Run the emulator on the command line:
 
 `gameboy <path to game rom>`
 
+Keybindings:
+- UP: W
+- DOWN: S
+- LEFT: A
+- RIGHT: D
+- B: J
+- A: K
+- SELECT: N
+- START: M
+
 ## Dependecies
 ImGui: https://github.com/ocornut/imgui \
 SDL2: https://github.com/libsdl-org/SDL/releases/tag/release-2.26.5
