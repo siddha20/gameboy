@@ -23,7 +23,7 @@ Keybindings:
 - SELECT: N
 - START: M
 
-## Dependecies
+## Dependencies
 ImGui: https://github.com/ocornut/imgui \
 SDL2: https://github.com/libsdl-org/SDL/releases/tag/release-2.26.5
 
