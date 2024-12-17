@@ -5,3 +5,4 @@ docs/*
 !docs/gifs
 lib/
 roms/
+compile_commands.json

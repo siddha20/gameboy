@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.18.0)
 
 set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # set(CMAKE_BUILD_TYPE Debug)
 
 if(APPLE OR UNIX)
@@ -60,6 +61,8 @@ foreach(TARGET IN LISTS TARGETS)
   endif()
 endforeach()
 
+find_package(SDL2 REQUIRED)
+
 if(WIN32 AND MSVC)
   set_target_properties(gameboy PROPERTIES LINK_FLAGS /SUBSYSTEM:CONSOLE)
   set(SDL2_DIR lib/SDL2/cmake)
@@ -69,10 +72,10 @@ if(WIN32 AND MSVC)
   target_include_directories(imgui PRIVATE lib/SDL2/include)
 elseif(APPLE)
   target_include_directories(gameboy
-                             PRIVATE /Library/Frameworks/SDL2.framework/Headers)
+                             PRIVATE ${SDL2_INCLUDE_DIRS})
+  target_include_directories(imgui PRIVATE ${SDL2_INCLUDE_DIRS})
 endif()
 
-find_package(SDL2 REQUIRED)
 set_target_properties(
   ${TARGETS}
   PROPERTIES CXX_STANDARD 20
